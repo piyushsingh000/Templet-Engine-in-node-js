@@ -1,0 +1,83 @@
+// // pahle create  a server...
+
+// const http = require("http");
+// const data = require("./data");
+// http
+//   .createServer((request, responce) => {
+//     responce.writeHead(200, { "content-type": "application" });
+
+//     responce.write(JSON.stringify(data));
+//     responce.end();
+//   })
+//   .listen(3500);
+
+// const fs = require("fs");
+// const path = require("path");
+// const dirPath = path.join(__dirname, "curd");
+// const filePath = `${dirPath}/appendFile.txt`;
+
+// // fs.writeFileSync(filePath, "this is apple file");
+// fs.readFile(filePath, "utf8", (err, item) => {
+//   console.log(item);
+// });
+
+// fs.appendFile(filePath, "and file name is apple.txt", (err) => {
+//   if (!err) console.log("perfect");
+// });
+// fs.rename(filePath, `${dirPath}/fruit.txt`, (err) => {
+//   if (!err) console.log("perfect");
+// });
+
+// fs.unlinkSync(`${dirPath}/fruit.txt`);
+
+// const express = require("express");
+// const app = express();
+
+// app.get("", (request, responce) => {
+//   responce.send("<h1>hello this is index page</h1>");
+// });
+// app.get("/about", (request, responce) => {
+//   responce.send(`<input type="text" placeholder="Enter somthing here : ">
+//   <button>Click me</button>
+//   `);
+// });
+// app.get("/help", (request, responce) => {
+//   responce.send(`<a href="/about">Go to about us Page</a>`);
+// });
+// app.listen(3000);
+
+const express = require("express");
+const path = require("path");
+
+const app = express();
+const publicPath = path.join(__dirname, "public");
+app.set("view engine", "ejs");
+
+// app.use(express.static(publicPath));
+app.get("", (request, responce) => {
+  responce.sendFile(`${publicPath}/index.html`);
+});
+
+app.get("/index", (request, responce) => {
+  responce.sendFile(`${publicPath}/index.html`);
+});
+app.get("/about", (request, responce) => {
+  responce.sendFile(`${publicPath}/about.html`);
+});
+app.get("/help", (request, responce) => {
+  responce.sendFile(`${publicPath}/help.html`);
+});
+
+app.get("/profile", (request, responce) => {
+  const user = {
+    name: `piyush singh`,
+    clg: `chitkara`,
+    roll: `200`,
+  };
+  responce.render("../public/views/profile", { user });
+});
+app.get("*", (request, responce) => {
+  responce.sendFile(`${publicPath}/nopage.html`);
+}); 
+
+app.listen(3000);
